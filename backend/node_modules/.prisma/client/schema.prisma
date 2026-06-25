@@ -1,0 +1,51 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Lead {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  phone     String?
+  company   String
+  source    String
+  status    String   @default("new")
+  score     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Opportunity {
+  id          String    @id @default(uuid())
+  title       String
+  stage       String    @default("qualified")
+  value       Float
+  probability Int
+  closeDate   DateTime?
+  notes       String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Activity {
+  id          String    @id @default(uuid())
+  type        String
+  description String
+  dueDate     DateTime?
+  completed   Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+}
+
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      String   @default("sales_rep")
+  createdAt DateTime @default(now())
+}

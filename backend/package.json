@@ -1,0 +1,27 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "allowScripts": {
+    "prisma": true,
+    "nodemon": true,
+    "@prisma/client": true,
+    "bcryptjs": true,
+    "jsonwebtoken": true,
+    "express": true,
+    "cors": true,
+    "dotenv": true
+  },
+  "devDependencies": {
+    "@types/node": "^26.0.1",
+    "prisma": "^5.22.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.22.0"
+  }
+}
