@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 
-const API = 'http://localhost:5000'
+//const API = 'http://localhost:5000'
+const API = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 
 const STAGES = [
   { key: 'new', label: 'New', color: '#3b82f6', bg: '#dbeafe' },
