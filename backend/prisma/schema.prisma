@@ -8,16 +8,17 @@ datasource db {
 }
 
 model Lead {
-  id        String   @id @default(uuid())
-  name      String
-  email     String   @unique
-  phone     String?
-  company   String
-  source    String
-  status    String   @default("new")
-  score     Int      @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String     @id @default(uuid())
+  name       String
+  email      String     @unique
+  phone      String?
+  company    String
+  source     String
+  status     String     @default("new")
+  score      Int        @default(0)
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+  activities Activity[]
 }
 
 model Opportunity {
@@ -36,6 +37,8 @@ model Activity {
   id          String    @id @default(uuid())
   type        String
   description String
+  leadId      String?
+  lead        Lead?     @relation(fields: [leadId], references: [id])
   dueDate     DateTime?
   completed   Boolean   @default(false)
   createdAt   DateTime  @default(now())

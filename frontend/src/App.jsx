@@ -5,6 +5,7 @@ import Leads from './pages/Leads'
 import Pipeline from './pages/Pipeline'
 import Reports from './pages/Reports'
 import Login from './pages/Login'
+import Activities from './pages/Activities'
 
 function Sidebar({ user, onLogout }) {
   const links = [
@@ -12,6 +13,7 @@ function Sidebar({ user, onLogout }) {
     { to: '/leads', label: 'Leads', icon: '👥' },
     { to: '/pipeline', label: 'Pipeline', icon: '📋' },
     { to: '/reports', label: 'Reports', icon: '📈' },
+    { to: '/activities', label: 'Activities', icon: '📌' },
   ]
   return (
     <aside style={{ width: 220, background: '#1a1a2e', minHeight: '100vh', padding: '2rem 1rem', flexShrink: 0, display: 'flex', flexDirection: 'column' }}>
@@ -72,6 +74,7 @@ export default function App() {
             <Route path="/leads" element={<Leads />} />
             <Route path="/pipeline" element={<Pipeline />} />
             <Route path="/reports" element={<Reports />} />
+            <Route path="/activities" element={<Activities />} />
           </Routes>
         </main>
       </div>
