@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 
-const API = import.meta.env.VITE_API_URL || 'http://localhost:5000'
-const getHeaders = () => ({ headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } })
+const API = 'http://localhost:5000'
 
 const STAGES = [
   { key: 'new', label: 'New', color: '#3b82f6', bg: '#dbeafe' },
@@ -17,20 +16,27 @@ export default function Pipeline() {
   const [dragging, setDragging] = useState(null)
 
   useEffect(() => {
-    axios.get(`${API}/api/leads`, getHeaders()).then(r => { setLeads(r.data); setLoading(false) })
+    axios.get(`${API}/api/leads`).then(r => { setLeads(r.data); setLoading(false) })
   }, [])
 
   const moveLeadToStage = async (leadId, newStatus) => {
-    await axios.patch(`${API}/api/leads/${leadId}`, { status: newStatus }, getHeaders())
+    await axios.patch(`${API}/api/leads/${leadId}`, { status: newStatus })
     setLeads(prev => prev.map(l => l.id === leadId ? { ...l, status: newStatus } : l))
   }
 
-  const onDragStart = (e, lead) => { setDragging(lead); e.dataTransfer.effectAllowed = 'move' }
+  const onDragStart = (e, lead) => {
+    setDragging(lead)
+    e.dataTransfer.effectAllowed = 'move'
+  }
+
   const onDrop = (e, stageKey) => {
     e.preventDefault()
-    if (dragging && dragging.status !== stageKey) moveLeadToStage(dragging.id, stageKey)
+    if (dragging && dragging.status !== stageKey) {
+      moveLeadToStage(dragging.id, stageKey)
+    }
     setDragging(null)
   }
+
   const onDragOver = (e) => { e.preventDefault(); e.dataTransfer.dropEffect = 'move' }
 
   if (loading) return <p style={{ color: '#64748b' }}>Loading pipeline...</p>
@@ -39,11 +45,14 @@ export default function Pipeline() {
     <div>
       <h1 style={{ fontSize: 24, fontWeight: 700, marginBottom: 8 }}>Pipeline</h1>
       <p style={{ color: '#64748b', marginBottom: '1.5rem', fontSize: 14 }}>Drag and drop leads between stages</p>
+
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
         {STAGES.map(stage => {
           const stageLeads = leads.filter(l => l.status === stage.key)
           return (
-            <div key={stage.key} onDrop={e => onDrop(e, stage.key)} onDragOver={onDragOver}
+            <div key={stage.key}
+              onDrop={e => onDrop(e, stage.key)}
+              onDragOver={onDragOver}
               style={{ background: '#fff', borderRadius: 12, border: '1px solid #e2e8f0', minHeight: 400, display: 'flex', flexDirection: 'column' }}>
               <div style={{ padding: '12px 16px', borderBottom: '1px solid #e2e8f0', borderRadius: '12px 12px 0 0', background: stage.bg }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -53,7 +62,8 @@ export default function Pipeline() {
               </div>
               <div style={{ padding: 12, display: 'flex', flexDirection: 'column', gap: 10, flex: 1 }}>
                 {stageLeads.map(lead => (
-                  <div key={lead.id} draggable onDragStart={e => onDragStart(e, lead)}
+                  <div key={lead.id} draggable
+                    onDragStart={e => onDragStart(e, lead)}
                     style={{ background: '#f8fafc', borderRadius: 8, padding: '10px 12px', border: '1px solid #e2e8f0', cursor: 'grab', fontSize: 13 }}>
                     <p style={{ fontWeight: 600, marginBottom: 4 }}>{lead.name}</p>
                     <p style={{ color: '#64748b', fontSize: 12, marginBottom: 4 }}>{lead.company}</p>

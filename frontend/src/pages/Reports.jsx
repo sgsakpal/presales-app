@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import { BarChart, Bar, XAxis, YAxis, Tooltip, PieChart, Pie, Cell, ResponsiveContainer, Legend } from 'recharts'
 
-const API = import.meta.env.VITE_API_URL || 'http://localhost:5000'
-const getHeaders = () => ({ headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } })
+const API = 'http://localhost:5000'
 const COLORS = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6']
 
 export default function Reports() {
@@ -11,7 +10,7 @@ export default function Reports() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    axios.get(`${API}/api/leads`, getHeaders()).then(r => { setLeads(r.data); setLoading(false) })
+    axios.get(`${API}/api/leads`).then(r => { setLeads(r.data); setLoading(false) })
   }, [])
 
   const bySource = Object.entries(
@@ -37,6 +36,7 @@ export default function Reports() {
     <div>
       <h1 style={{ fontSize: 24, fontWeight: 700, marginBottom: 8 }}>Reports</h1>
       <p style={{ color: '#64748b', marginBottom: '1.5rem', fontSize: 14 }}>Visual overview of your presales pipeline</p>
+
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: '1.5rem' }}>
         <div style={cardStyle}>
           <h2 style={{ fontSize: 15, fontWeight: 600, marginBottom: '1rem' }}>Leads by Source</h2>
@@ -62,6 +62,7 @@ export default function Reports() {
           </ResponsiveContainer>
         </div>
       </div>
+
       <div style={cardStyle}>
         <h2 style={{ fontSize: 15, fontWeight: 600, marginBottom: '1rem' }}>Lead Score Distribution</h2>
         <ResponsiveContainer width="100%" height={200}>

@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 
-const API = import.meta.env.VITE_API_URL || 'http://localhost:5000'
-const getHeaders = () => ({ headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } })
+const API = 'http://localhost:5000'
 
 function StatCard({ label, value, color }) {
   return (
@@ -18,7 +17,7 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    axios.get(`${API}/api/leads`, getHeaders())
+    axios.get(`${API}/api/leads`)
       .then(r => { setLeads(r.data); setLoading(false) })
       .catch(() => setLoading(false))
   }, [])
@@ -34,12 +33,14 @@ export default function Dashboard() {
     <div>
       <h1 style={{ fontSize: 24, fontWeight: 700, marginBottom: 8 }}>Dashboard</h1>
       <p style={{ color: '#64748b', marginBottom: '2rem' }}>Welcome back! Here's your presales overview.</p>
+
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 16, marginBottom: '2rem' }}>
         <StatCard label="Total Leads" value={total} color="#3b82f6" />
         <StatCard label="New Leads" value={newLeads} color="#f59e0b" />
         <StatCard label="Qualified" value={qualified} color="#10b981" />
         <StatCard label="Avg Score" value={avgScore} color="#8b5cf6" />
       </div>
+
       <div style={{ background: '#fff', borderRadius: 12, padding: '1.5rem', border: '1px solid #e2e8f0' }}>
         <h2 style={{ fontSize: 16, fontWeight: 600, marginBottom: '1rem' }}>Recent Leads</h2>
         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14 }}>

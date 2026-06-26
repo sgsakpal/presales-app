@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 
-const API = import.meta.env.VITE_API_URL || 'http://localhost:5000'
-const getHeaders = () => ({ headers: { Authorization: `Bearer ${localStorage.getItem('token')}` } })
+const API = 'http://localhost:5000'
 
 const empty = { name: '', email: '', phone: '', company: '', source: 'website', status: 'new', score: 50 }
 
@@ -15,7 +14,7 @@ export default function Leads() {
   const [search, setSearch] = useState('')
 
   const fetchLeads = () => {
-    axios.get(`${API}/api/leads`, getHeaders()).then(r => { setLeads(r.data); setLoading(false) })
+    axios.get(`${API}/api/leads`).then(r => { setLeads(r.data); setLoading(false) })
   }
 
   useEffect(() => { fetchLeads() }, [])
@@ -23,7 +22,7 @@ export default function Leads() {
   const handleSubmit = async () => {
     if (!form.name || !form.email || !form.company) return alert('Name, email and company are required')
     setSaving(true)
-    await axios.post(`${API}/api/leads`, { ...form, score: Number(form.score) }, getHeaders())
+    await axios.post(`${API}/api/leads`, { ...form, score: Number(form.score) })
     setSaving(false)
     setShowForm(false)
     setForm(empty)
@@ -32,7 +31,7 @@ export default function Leads() {
 
   const handleDelete = async (id) => {
     if (!window.confirm('Delete this lead?')) return
-    await axios.delete(`${API}/api/leads/${id}`, getHeaders())
+    await axios.delete(`${API}/api/leads/${id}`)
     fetchLeads()
   }
 
@@ -90,7 +89,12 @@ export default function Leads() {
         </div>
       )}
 
-      <input style={{ ...inputStyle, marginBottom: '1rem', maxWidth: 300 }} placeholder="🔍 Search by name or company..." value={search} onChange={e => setSearch(e.target.value)} />
+      <input
+        style={{ ...inputStyle, marginBottom: '1rem', maxWidth: 300 }}
+        placeholder="🔍 Search by name or company..."
+        value={search}
+        onChange={e => setSearch(e.target.value)}
+      />
 
       <div style={{ background: '#fff', borderRadius: 12, border: '1px solid #e2e8f0', overflow: 'hidden' }}>
         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 14 }}>
