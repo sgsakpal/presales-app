@@ -15,7 +15,7 @@ export default function Leads() {
   const [search, setSearch] = useState('')
 
   const fetchLeads = () => {
-    axios.get(`${API}/api/leads`).then(r => { setLeads(r.data); setLoading(false) })
+   axios.get(`${API}/api/leads`, getHeaders()).then(r => { setLeads(r.data); setLoading(false) })
   }
 
   useEffect(() => { fetchLeads() }, [])

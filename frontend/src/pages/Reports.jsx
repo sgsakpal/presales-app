@@ -11,7 +11,7 @@ export default function Reports() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    axios.get(`${API}/api/leads`).then(r => { setLeads(r.data); setLoading(false) })
+   axios.get(`${API}/api/leads`, getHeaders()).then(r => { setLeads(r.data); setLoading(false) })
   }, [])
 
   const bySource = Object.entries(

@@ -17,7 +17,7 @@ export default function Pipeline() {
   const [dragging, setDragging] = useState(null)
 
   useEffect(() => {
-    axios.get(`${API}/api/leads`).then(r => { setLeads(r.data); setLoading(false) })
+    axios.get(`${API}/api/leads`, getHeaders()).then(r => { setLeads(r.data); setLoading(false) })
   }, [])
 
   const moveLeadToStage = async (leadId, newStatus) => {

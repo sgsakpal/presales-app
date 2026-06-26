@@ -4,6 +4,10 @@ import axios from 'axios'
 //const API = 'http://localhost:5000'
 const API = import.meta.env.VITE_API_URL || 'http://localhost:5000'
 
+const getHeaders = () => ({
+  headers: { Authorization: `Bearer ${localStorage.getItem('token')}` }
+})
+
 function StatCard({ label, value, color }) {
   return (
     <div style={{ background: '#fff', borderRadius: 12, padding: '1.5rem', border: '1px solid #e2e8f0', borderLeft: `4px solid ${color}` }}>
@@ -18,7 +22,12 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    axios.get(`${API}/api/leads`)
+// Change this
+//axios.get(`${API}/api/leads`)
+
+// To this
+axios.get(`${API}/api/leads`, getHeaders())
+
       .then(r => { setLeads(r.data); setLoading(false) })
       .catch(() => setLoading(false))
   }, [])
